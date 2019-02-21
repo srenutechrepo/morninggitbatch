@@ -1,5 +1,5 @@
 package com.sreenu.model;
-
+/* OrderBean*/
 import java.math.BigDecimal;
 
 public class OrderBean {
