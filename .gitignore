@@ -4,4 +4,4 @@
 .settings
 build
 classes
-temp
+target
