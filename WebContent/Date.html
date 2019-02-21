@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>Date servlet demo</title>
+<script type="text/javascript">
+	function ajaxcall() {
+		var xhr;
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else {
+			xhr = new ActiveXObject("MICROSOFT.XMLHTTP");
+		}
+		xhr.open("GET","http://localhost:8080/FirstAjax/DateServlet",true);
+		xhr.onreadystatechange=function()
+		{
+			alert("reaadyState "+xhr.readyState)
+			if(xhr.readyState==2 ||xhr.readyState==3)
+				{
+				document.getElementById("message").innerHTML="<img src='./images/200_s.gif'>";
+				}
+			else if(xhr.readyState==4 && xhr.status==200)
+				{
+				document.getElementById("message").innerHTML=xhr.responseText;
+				}
+			else
+				{
+				document.getElementById("message").innerHTML="Sorry Internal eeror in the server";
+		
+				}
+		}
+		xhr.send(null);
+
+	}
+</script>
+</head>
+<body>
+
+	<input type="button" value="Get date" onclick="ajaxcall()">
+	<div id="message"></div>
+</body>
+</html>

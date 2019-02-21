@@ -1,0 +1,45 @@
+<html>
+<head>
+<title>Date servlet demo</title>
+<script type="text/javascript">
+	function ajaxcall() {
+		var xhr;
+		var username=document.getElementById("username").value;
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else {
+			xhr = new ActiveXObject("MICROSOFT.XMLHTTP");
+		}
+		//xhr.open("GET","http://localhost:8080/FirstAjax/VerifyUsername?username="+username,true);
+	    xhr.open("POST","http://localhost:8080/FirstAjax/VerifyUsername",true);
+
+		xhr.onreadystatechange=function()
+		{
+		//	alert("reaadyState "+xhr.readyState)
+			if(xhr.readyState==2 ||xhr.readyState==3)
+				{
+				document.getElementById("message").innerHTML="<img src='./images/200_s.gif'>";
+				}
+			else if(xhr.readyState==4 && xhr.status==200)
+				{
+				document.getElementById("message").innerHTML="<font color='red'>"+xhr.responseText+"</font>";
+				}
+			else
+				{
+				document.getElementById("message").innerHTML="Sorry Internal eeror in the server";
+		
+				}
+		}
+	//	xhr.send(null);
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.send("username="+username);
+
+	}
+</script>
+</head>
+<body>
+    <input type="text" name="username" id="username" onblur	="ajaxcall()">
+<!-- 	<input type="button" value="Verify" onclick="ajaxcall()"> -->
+	<div id="message"></div>
+</body>
+</html>

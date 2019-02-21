@@ -1,0 +1,74 @@
+<html>
+<head>
+<title>Date servlet demo</title>
+<script src="sorttable.js"></script>
+<style type="text/css">
+/* Sortable tables */
+table.sortable thead {
+    background-color:#eee;
+    color:#666666;
+    font-weight: bold;
+    cursor: default;
+}
+</style>
+<script type="text/javascript">
+	function ajaxcall() {
+		var xhr;
+		if (window.XMLHttpRequest) {
+			xhr = new XMLHttpRequest();
+		} else {
+			xhr = new ActiveXObject("MICROSOFT.XMLHTTP");
+		}
+		xhr.open("GET","http://localhost:8080/FirstAjax/OrderHistoryDetails",true);
+	  //  xhr.open("POST","http://localhost:8080/FirstAjax/VerifyUsername",true);
+
+		xhr.onreadystatechange=function()
+		{
+		//	alert("reaadyState "+xhr.readyState)
+			if(xhr.readyState==2 ||xhr.readyState==3)
+				{
+				document.getElementById("message").innerHTML="<img src='./images/200_s.gif'>";
+				}
+			else if(xhr.readyState==4 && xhr.status==200)
+				{
+				var i;
+				  var xmlDoc = xhr.responseXML;
+				  var table="<table id='sortable' border='1' class='sortable'><tr><th>OrderID</th><th>OrderName</th><th>Amount</th><th>Status</th></tr>";
+				  var x = xmlDoc.getElementsByTagName("order");
+				  for (i = 0; i <x.length; i++) {
+					  if(i%2==0){table=table+"<tr bgcolor='lightgreen'>";}else{table=table+"<tr bgcolor='yellow'>";}
+				    table += "<td>" +
+				    x[i].getElementsByTagName("orderid")[0].childNodes[0].nodeValue +
+				    "</td><td>" +
+				    x[i].getElementsByTagName("ordername")[0].childNodes[0].nodeValue +
+				    "</td><td>"+
+				   x[i].getElementsByTagName("amount")[0].childNodes[0].nodeValue 
+				    +"</td><td>" +
+				    x[i].getElementsByTagName("status")[0].childNodes[0].nodeValue
+				    +"</td></tr>";
+				  }
+				  document.getElementById("message").innerHTML = table;
+				//console.log(xhr.responseXML);
+			//	document.getElementById("message").innerHTML="<font color='red'>"+xhr.responseXML+"</font>";
+				 var newTableObject = document.getElementById("sortable");
+				 sorttable.makeSortable(newTableObject);
+				}
+			else
+				{
+				document.getElementById("message").innerHTML="Sorry Internal eeror in the server";
+		
+				}
+		}
+		xhr.send(null);
+	//xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//	xhr.send("username="+username);
+
+	}
+</script>
+</head>
+<body>
+
+	<input type="button" value="Get Order Details" onclick="ajaxcall()">
+	<div id="message"></div>
+</body>
+</html>
